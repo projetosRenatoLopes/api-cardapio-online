@@ -1,0 +1,90 @@
+[
+  {
+    "id": "Cod.01",
+    "nomeprod": "X-Tudo",
+    "preco": "24.90",
+    "img": "https://www.manollopizzaria.com.br/wp-content/uploads/2021/02/X_TUDO_DE_HAMBURGUER1-1.jpg",
+    "ingr": "Hamburger, Bacon, Ovo, Presunto, Queijo, Alface, Milho, Bata Palha, Maionese.",
+    "categ": "Sanduiches"
+  },
+  {
+    "id": "Cod.02",
+    "nomeprod": "X-Nada",
+    "preco": "9.90",
+    "img": "https://img.freepik.com/fotos-gratis/tela-vazia-branca_1194-7555.jpg?w=740&t=st=1651028389~exp=1651028989~hmac=47d112cd2480578817b2d6fee893a78860164f73b784bad8bc83192f489906fb",
+    "ingr": "Nada",
+    "categ": "Sanduiches"
+  },
+  {
+    "id": "Cod.03",
+    "nomeprod": "X-Ovo",
+    "preco": "16.50",
+    "img": "https://www.manollopizzaria.com.br/wp-content/uploads/2021/02/xbacon.jpg",
+    "ingr": "Ovo, Presunto, Queijo, Maionese.",
+    "categ": "Sanduiches"
+  },
+  {
+    "id": "Cod.04",
+    "nomeprod": "X-Pão",
+    "preco": "14.90",
+    "img": "https://cdn.casacarne.com.br/media/catalog/product/cache/1/image/1540x1540/3cf1b12246cd9d610f04d92f01db0c71/p/a/pa_o_brioche_max_-_aryzta.jpeg",
+    "ingr": "Pão Brioche.",
+    "categ": "Sanduiches"
+  },
+  {
+    "id": "Cod.05",
+    "nomeprod": "Hot-Dog Completo",
+    "preco": "9.90",
+    "img": "https://www.rbsdirect.com.br/imagesrc/35483374.jpg?w=700",
+    "ingr": "Pão, Salsicha, Molho de Tomate, Bata Palha, Milho, Maionese, KetChup, Mostarda, Vinagrete.",
+    "categ": "HotDog"
+  },
+  {
+    "id": "Cod.06",
+    "nomeprod": "Hot-Dog Basico",
+    "preco": "6.90",
+    "img": "https://st2.depositphotos.com/1692343/7395/i/450/depositphotos_73953881-stock-photo-barbecue-grilled-hot-dog.jpg",
+    "ingr": "Pão, Salsicha, Molho de Tomate, Bata Palha, Milho",
+    "categ": "HotDog"
+  },
+  {
+    "id": "Cod.07",
+    "nomeprod": "Fanta Lata 310ml",
+    "preco": "5.00",
+    "img": "https://differs-api-production.s3-sa-east-1.amazonaws.com/_fanta310_fd77fbc5-c864-44ca-a1a4-17ce5c5891eb.webp",
+    "ingr": "Fanta Lata 310ml",
+    "categ": "Bebidas"
+  },
+  {
+    "id": "Cod.08",
+    "nomeprod": "Coca Cola Lata 310ml",
+    "preco": "5.00",
+    "img": "https://differs-api-production.s3-sa-east-1.amazonaws.com/_coca_cola_310ml_aa9d0daa-dbb7-4600-afeb-1b9f118ba9f0.jpeg",
+    "ingr": "Coca Cola Lata 310ml",
+    "categ": "Bebidas"
+  },
+  {
+    "id": "Cod.09",
+    "nomeprod": "Suco Del Valle Lata 310ml",
+    "preco": "4.00",
+    "img": "https://differs-api-production.s3-sa-east-1.amazonaws.com/_suco_del_valle_d3a1e166-c3a8-46ad-af9d-b43d584e42c8.jpeg",
+    "ingr": "Suco Del Valle Lata 310ml",
+    "categ": "Bebidas"
+  },
+  {
+    "id": "Cod.10",
+    "nomeprod": "Água com Gás 500ml",
+    "preco": "4.00",
+    "img": "https://differs-api-production.s3-sa-east-1.amazonaws.com/_transferir_a65f1318-b30b-4139-9123-fae83d3ce649.jpeg",
+    "ingr": "Água com Gás 500ml",
+    "categ": "Bebidas"
+  },
+  {
+    "id": "Cod.11",
+    "nomeprod": "Água sem Gás 500ml",
+    "preco": "4.00",
+    "img": "https://differs-api-production.s3-sa-east-1.amazonaws.com/_transferir_a65f1318-b30b-4139-9123-fae83d3ce649.jpeg",
+    "ingr": "Água sem Gás 500ml",
+    "categ": "Bebidas"
+  }
+]
