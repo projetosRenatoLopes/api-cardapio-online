@@ -1,0 +1,28 @@
+{
+  "name": "api-cardapio-online",
+  "version": "1.0.0",
+  "description": "API Cardapio Online",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/projetosRenatoLopes/api-cardapio-online.git"
+  },
+  "keywords": [
+    "node",
+    "cardapio",
+    "online",
+    "api"
+  ],
+  "author": "devLopesRenato",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/projetosRenatoLopes/api-cardapio-online/issues"
+  },
+  "homepage": "https://github.com/projetosRenatoLopes/api-cardapio-online#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
