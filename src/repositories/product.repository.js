@@ -12,5 +12,4 @@ exports.findAllProducts = (tag) => {
     } catch (error) {
         console.log(error)
     }
-
 }

@@ -37,6 +37,9 @@ app.use('/produtos', rotaProducts);
 app.use('/api', (req, res, next) => {
     res.status(200).send('Cardápio Online by Renato Lopes');
 });
+app.use('/', (req, res, next) => {
+    res.status(200).send('Cardápio Online by Renato Lopes');
+});
 
 app.use((req, res, next) => {
     const erro = new Error('Enedreço não encontrado');

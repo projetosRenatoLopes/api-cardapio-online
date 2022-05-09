@@ -4,7 +4,7 @@ const { db } = require('../db')
 exports.findAllCompany = async (req, res, next) => {
 
     try {
-        const result = await db.query(`SELECT name, tag FROM company;`);
+        const result = await db.query(`SELECT name, tag, logo FROM company;`);
         const response = {
             length: result.rows.length,
             companies: result.rows
