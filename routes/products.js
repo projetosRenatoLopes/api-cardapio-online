@@ -1,13 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const ProductRepository = require('../src/repositories/product.repository');
 
 // reposta de produtos de uma empresa
-router.get('/:company', (req, res, next) => {
-    const company = req.params.company;
-    res.status(200).send({
-        msg: `Produtos de ${company}`
-    });
-});
+router.get('/:company', ProductRepository.findAllProducts);
 
 
 // criar um produto para uma empresa
