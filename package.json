@@ -4,9 +4,7 @@
   "description": "API Cardapio Online",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: sem teste specificado\" && exit 1",
-    "build": "react-scripts build",
-    "start": "nodemon server.js"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
