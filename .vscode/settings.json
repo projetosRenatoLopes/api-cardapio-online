@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/fd1e3fba-982f-41cd-9c9f-cd133c2416a2/resourceGroups/App-Service-ApiCardapioOnline/providers/Microsoft.Web/sites/api-cardapio-on",
+    "appService.deploySubpath": "."
+}

@@ -18,11 +18,11 @@ exports.findAllCompany = async (req, res, next) => {
 
 exports.findCompanyByTag = async (req, res, next) => {
     try {
-        const result = await db.query("SELECT name, tag, funcdom, funcseg, functer, funcqua, funcqui, funcsex, funcsab, adrrua, adrnum, adrcom, adrbai, adrcid, adrest, txentrega FROM company WHERE tag = '" + [req.params.company] + "';");
+        const result = await db.query("SELECT * FROM company WHERE tag = '" + [req.params.company] + "';");
         const queryRes = result.rows
-        var response = { company: 'Erro ao consultar empresa' }
+        var response = { company: ['Erro ao consultar empresa'] }
         if (queryRes.length === 0) {
-            response = { company: 'Empresa ' + [req.params.company] + ' não encontrada' }
+            response = { company: ['Empresa ' + [req.params.company] + ' não encontrada'] }
         } else {
             response = { company: result.rows }
         }

@@ -9,6 +9,7 @@ exports.findAllProducts = async (req, res, next) => {
         if (queryRes.length === 0) {
             response = { products: 'Nenhum produto encontrado para ' + [req.params.company] + '.' }
         } else {
+            // @ts-ignore
             response = [{ length: result.rows.length, products: result.rows }]
         }
         return res.status(201).send(response);

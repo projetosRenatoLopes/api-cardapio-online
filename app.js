@@ -19,6 +19,7 @@ app.use((req, res, next) => {
     );
 
     if (req.method === 'OPTIONS') {
+        // @ts-ignore
         req.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
         return res.status(200).send({});
     }
@@ -43,6 +44,7 @@ app.use('/', (req, res, next) => {
 
 app.use((req, res, next) => {
     const erro = new Error('Enedreço não encontrado');
+    // @ts-ignore
     erro.status = 404;
     next(erro);
 });
