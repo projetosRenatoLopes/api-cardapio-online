@@ -21,6 +21,15 @@ CREATE TABLE IF NOT EXISTS company (
     PRIMARY KEY (uuid)
 );
 
+CREATE TABLE IF NOT EXISTS login (
+    uuid uuid DEFAULT uuid_generate_v4(),
+    nickname VARCHAR NOT NULL UNIQUE,
+    name VARCHAR NOT NULL,
+    pass VARCHAR NOT NULL,
+    token VARCHAR NOT NULL UNIQUE,
+    PRIMARY KEY (uuid)
+);
+
 ALTER TABLE company ALTER COLUMN tag VARCHAR NOT NULL UNIQUE;
 
 INSERT INTO company (name, tag, funcDOM, funcSEG, funcTER, funcQUA, funcQUI, funcSEX, funcSAB, adrRUA, adrNUM, adrCOM, adrBAI, adrCID, adrEST, txENTREGA) VALUES ('Renato Lanches', 'renato-lanches', 'Fechado', 'Fechado', '18:00-23:00', '18:00-23:00', '18:00-23:00', '18:00-23:00', '18:00-23:00', 'Rua dos Pessegueiros', '196', 'Casa 2', 'Serra Negra', 'São Gotardo', 'MG', '7.0');

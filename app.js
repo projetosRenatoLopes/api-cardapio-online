@@ -38,9 +38,11 @@ app.use((req, res, next) => {
 const rotaCompany = require('./routes/company');
 const rotaProducts = require('./routes/products');
 const rotaInserts = require('./routes/inserts');
+const rotaUsers = require('./routes/users')
 app.use('/empresa', rotaCompany);
 app.use('/produtos', rotaProducts);
 app.use('/cadastro', rotaInserts);
+app.use('/login', rotaUsers);
 
 
 app.use('/api', (req, res, next) => {
