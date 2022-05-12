@@ -1,5 +1,6 @@
 
-const { db } = require('../db')
+const { db } = require('../db');
+const {checkProps} = require('../utils/checkProps');
 
 exports.findAllCompany = async (req, res, next) => {
 
@@ -9,7 +10,7 @@ exports.findAllCompany = async (req, res, next) => {
             length: result.rows.length,
             companies: result.rows
         }
-        return res.status(201).send(response);
+        return res.status(200).send(response);
     } catch (error) {
         console.log("ERRO: " + error)
         return res.status(500).send(error);
@@ -26,10 +27,26 @@ exports.findCompanyByTag = async (req, res, next) => {
         } else {
             response = { company: result.rows }
         }
-        return res.status(201).send(response);
+        return res.status(200).send(response);
     } catch (error) {
         return res.status(500).send(error);
     }
 }
 
+exports.insertCompany = (req, res, next) => {
+    const data = req.body
+    if (checkProps(data) === true) {
+        return res.status(200).send( `Empresa ${data.name} cadastrada` );
+    } else {
+        return res.status(404).send('Requisição invalida');
+    }
+    //return res.status(200).send(data);
 
+
+    // try {
+    // } catch (error) {
+    //     const data = req
+    //     return res.status(500).send({data});
+    // }
+
+}
