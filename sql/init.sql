@@ -20,6 +20,8 @@ CREATE TABLE IF NOT EXISTS company (
     tel VARCHAR NOT NULL,
     PRIMARY KEY (uuid)
 );
+ALTER TABLE company
+ADD categs VARCHAR NULL;
 
 CREATE TABLE IF NOT EXISTS login (
     uuid uuid DEFAULT uuid_generate_v4(),
@@ -30,7 +32,34 @@ CREATE TABLE IF NOT EXISTS login (
     PRIMARY KEY (uuid)
 );
 
+CREATE TABLE IF NOT EXISTS categories(
+    uuid uuid DEFAULT uuid_generate_v4(),
+    name VARCHAR NOT NULL UNIQUE,
+    id VARCHAR NOT NULL UNIQUE,
+    PRIMARY KEY (id)
+);
+
+
+
 ALTER TABLE company ALTER COLUMN tag VARCHAR NOT NULL UNIQUE;
+
+INSERT INTO categories (name, id) VALUES ('Sanduíches', '1');
+INSERT INTO categories (name, id) VALUES ('Pizzas', '2');
+INSERT INTO categories (name, id) VALUES ('Bolos', '3');
+INSERT INTO categories (name, id) VALUES ('Pães', '4');
+INSERT INTO categories (name, id) VALUES ('Batatas', '5');
+INSERT INTO categories (name, id) VALUES ('Bebidas', '6');
+INSERT INTO categories (name, id) VALUES ('Saladas', '7');
+INSERT INTO categories (name, id) VALUES ('Porções', '8');
+INSERT INTO categories (name, id) VALUES ('Carnes', '9');
+INSERT INTO categories (name, id) VALUES ('Bolachas', '10');
+INSERT INTO categories (name, id) VALUES ('Integrais', '11');
+INSERT INTO categories (name, id) VALUES ('Queijos', '12');
+INSERT INTO categories (name, id) VALUES ('HotDog', '13');
+INSERT INTO categories (name, id) VALUES ('Esfirras', '14');
+INSERT INTO categories (name, id) VALUES ('Sobremesas', '15');
+
+
 
 INSERT INTO company (name, tag, funcDOM, funcSEG, funcTER, funcQUA, funcQUI, funcSEX, funcSAB, adrRUA, adrNUM, adrCOM, adrBAI, adrCID, adrEST, txENTREGA) VALUES ('Renato Lanches', 'renato-lanches', 'Fechado', 'Fechado', '18:00-23:00', '18:00-23:00', '18:00-23:00', '18:00-23:00', '18:00-23:00', 'Rua dos Pessegueiros', '196', 'Casa 2', 'Serra Negra', 'São Gotardo', 'MG', '7.0');
 

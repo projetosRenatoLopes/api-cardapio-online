@@ -1,4 +1,3 @@
-const { password } = require('pg/lib/defaults');
 const { db } = require('../db')
 var jwt = require('jsonwebtoken');
 
