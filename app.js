@@ -41,12 +41,12 @@ const rotaCompany = require('./routes/company');
 const rotaProducts = require('./routes/products');
 const rotaInserts = require('./routes/inserts');
 const rotaUsers = require('./routes/users')
-const rotaCategories = require('./routes/categories')
+const rotaOpcoes = require('./routes/opcoes')
 app.use('/empresa', rotaCompany);
 app.use('/produtos', rotaProducts);
 app.use('/cadastro', rotaInserts);
 app.use('/admin', rotaUsers);
-app.use('/categorias', rotaCategories)
+app.use('/opcoes', rotaOpcoes)
 
 
 
