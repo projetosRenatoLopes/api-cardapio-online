@@ -1,6 +1,7 @@
 
 const { db } = require('../db');
-const {checkProps} = require('../utils/checkProps');
+const { checkProps } = require('../utils/checkProps');
+const { verifyJWT } = require('../utils/checkToken');
 
 exports.findAllCompany = async (req, res, next) => {
 
@@ -34,19 +35,33 @@ exports.findCompanyByTag = async (req, res, next) => {
 }
 
 exports.insertCompany = (req, res, next) => {
-    const data = req.body
-    if (checkProps(data) === true) {
-        return res.status(200).send( `Empresa ${data.name} cadastrada` );
-    } else {
-        return res.status(404).send('Requisição invalida');
+    try {
+
+        const data = req.body
+        const token = req.headers.authorization
+        const vToken = verifyJWT(token)
+        console.log(verifyJWT(token))
+        if (vToken.status === 401) {
+
+            return res.status(401).send(vToken.message)
+
+        } else if (vToken.status === 500) {
+
+            return res.status(500).send(vToken.message)
+
+        } else if (vToken.status === 200) {
+
+            if (checkProps(data) === true) {
+                return res.status(200).send(`Empresa ${data.name} cadastrada`);
+            } else {
+                return res.status(404).send('Requisição invalida');
+            }
+
+        }
+
+    } catch (error) {
+        const data = req
+        return res.status(500).send({ data });
     }
-    //return res.status(200).send(data);
-
-
-    // try {
-    // } catch (error) {
-    //     const data = req
-    //     return res.status(500).send({data});
-    // }
 
 }
