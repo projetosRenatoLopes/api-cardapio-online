@@ -13,8 +13,7 @@ exports.findAllCompany = async (req, res, next) => {
         }
         return res.status(200).send(response);
     } catch (error) {
-        console.log("ERRO: " + error)
-        return res.status(500).send(error);
+        return res.status(500).send({ 'Error': 500, 'message': error.error });
     }
 }
 
@@ -30,38 +29,33 @@ exports.findCompanyByTag = async (req, res, next) => {
         }
         return res.status(200).send(response);
     } catch (error) {
-        return res.status(500).send(error);
+        return res.status(500).send({ 'Error': 500, 'message': error.error });
     }
 }
 
-exports.insertCompany = (req, res, next) => {
+exports.insertCompany = async (req, res, next) => {
     try {
+        const vToken = verifyJWT(req.headers.authorization)
+        if (vToken.status === 401) { return res.status(401).send({ "error": 401, "message": vToken.message }) }
+        else if (vToken.status === 500) { return res.status(500).send({ "error": 500, "message": vToken.message }) }
+        else if (vToken.status === 200) {
 
-        const data = req.body
-        const token = req.headers.authorization
-        const vToken = verifyJWT(token)
-        console.log(verifyJWT(token))
-        if (vToken.status === 401) {
+            if (checkProps(req.body) === true) {
 
-            return res.status(401).send(vToken.message)
+                //const result = db.query("INSERT INTO company (name, tag, funcdom, funcseg, functer, funcqua, funcqui, funcsex, funcsab, adrrua, adrnum, adrcom, adrbai, adrcid, adrest, txentrega, logo, tel, categs, paymodes) '" + JSON.stringify(req.body.empname) + "','" + [req.body.emptag] + "','" + [req.body.empfuncdom] + "','" + [req.body.empfuncseg] + "','" + [req.body.empfuncter] + "','" + [req.body.empfuncqua] + "','" + [req.body.empfuncqui] + "','" + [req.body.empfuncsex] + "','" + [req.body.empfuncsab] + "','" + [req.body.empadrrua] + "','" + [req.body.empadrnum] + "','" + [req.body.empadrcom] + "','" + [req.body.empadrbai] + "','" + [req.body.empadrcid] + "','" + [req.body.empadrest] + "','" + [req.body.emptxentrega] + "','" + [req.body.emplogo] + "','" + [req.body.emptel] + "','" + [req.body.empcategs] + "','" + [req.body.emppaymodes] + "';");
+                const result = await db.query("INSERT INTO company (name, tag, funcdom, funcseg, functer, funcqua, funcqui, funcsex, funcsab, adrrua, adrnum, adrcom, adrbai, adrcid, adrest, txentrega, logo, tel, categs, paymodes) VALUES ('" + [req.body.empname] + "','" + [req.body.emptag] + "','" + [req.body.empfuncdom] + "','" + [req.body.empfuncseg] + "','" + [req.body.empfuncter] + "','" + [req.body.empfuncqua] + "','" + [req.body.empfuncqui] + "','" + [req.body.empfuncsex] + "','" + [req.body.empfuncsab] + "','" + [req.body.empadrrua] + "','" + [req.body.empadrnum] + "','" + [req.body.empadrcom] + "','" + [req.body.empadrbai] + "','" + [req.body.empadrcid] + "','" + [req.body.empadrest] + "','" + [req.body.emptxentrega] + "','" + [req.body.emplogo] + "','" + [req.body.emptel] + "','" + [req.body.empcategs] + "','" + [req.body.emppaymodes] + "');");
+                console.log(result)
+                return res.status(200).send({"status":200, "message":"Dados inserido com sucesso"});
 
-        } else if (vToken.status === 500) {
-
-            return res.status(500).send(vToken.message)
-
-        } else if (vToken.status === 200) {
-
-            if (checkProps(data) === true) {
-                return res.status(200).send(`Empresa ${data.name} cadastrada`);
             } else {
-                return res.status(404).send('Requisição invalida');
+                return res.status(404).send({"status":404, "message":"Requisição inválida"});
             }
 
         }
 
     } catch (error) {
-        const data = req
-        return res.status(500).send({ data });
+        console.log(error)
+        return res.status(500).send({ 'Error': error.code, 'message': error.error });
     }
 
 }

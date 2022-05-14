@@ -1,22 +1,24 @@
 const checkProps = (objeto) => {
-    if (objeto.hasOwnProperty("name") &&
-        objeto.hasOwnProperty("tag") &&
-        objeto.hasOwnProperty("funcdom") &&
-        objeto.hasOwnProperty("funcseg") &&
-        objeto.hasOwnProperty("functer") &&
-        objeto.hasOwnProperty("funcqua") &&
-        objeto.hasOwnProperty("funcqui") &&
-        objeto.hasOwnProperty("funcsex") &&
-        objeto.hasOwnProperty("funcsab") &&
-        objeto.hasOwnProperty("adrrua") &&
-        objeto.hasOwnProperty("adrnum") &&
-        objeto.hasOwnProperty("adrcom") &&
-        objeto.hasOwnProperty("adrbai") &&
-        objeto.hasOwnProperty("adrcid") &&
-        objeto.hasOwnProperty("adrest") &&
-        objeto.hasOwnProperty("txentrega") &&
-        objeto.hasOwnProperty("logo") &&
-        objeto.hasOwnProperty("tel") === true) {
+    if (objeto.hasOwnProperty("empname") &&
+        objeto.hasOwnProperty("emptag") &&
+        objeto.hasOwnProperty("empfuncdom") &&
+        objeto.hasOwnProperty("empfuncseg") &&
+        objeto.hasOwnProperty("empfuncter") &&
+        objeto.hasOwnProperty("empfuncqua") &&
+        objeto.hasOwnProperty("empfuncqui") &&
+        objeto.hasOwnProperty("empfuncsex") &&
+        objeto.hasOwnProperty("empfuncsab") &&
+        objeto.hasOwnProperty("empadrrua") &&
+        objeto.hasOwnProperty("empadrnum") &&
+        objeto.hasOwnProperty("empadrcom") &&
+        objeto.hasOwnProperty("empadrbai") &&
+        objeto.hasOwnProperty("empadrcid") &&
+        objeto.hasOwnProperty("empadrest") &&
+        objeto.hasOwnProperty("emptxentrega") &&
+        objeto.hasOwnProperty("emplogo") &&
+        objeto.hasOwnProperty("emptel") &&
+        objeto.hasOwnProperty("empcategs") &&
+        objeto.hasOwnProperty("emppaymodes") === true) {
         return true
     } else {
         return false
