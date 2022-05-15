@@ -4,23 +4,17 @@ const { verifyJWT } = require('../utils/checkToken');
 
 exports.getCategories = async (req, res, next) => {
     try {
-        const token = req.headers.authorization
-        const vToken = verifyJWT(token)
-
-        if (vToken.status === 401) {
-
-            return res.status(401).send(vToken.message)
-
-        } else if (vToken.status === 500) {
-
-            return res.status(500).send(vToken.message)
-
-        } else if (vToken.status === 200) {
+        // const token = req.headers.authorization
+        // const vToken = verifyJWT(token)
+        // if (vToken.status === 401) {
+        //     return res.status(401).send(vToken.message)
+        // } else if (vToken.status === 500) {
+        //     return res.status(500).send(vToken.message)
+        // } else if (vToken.status === 200) {
             const result = await db.query("SELECT name AS desc, id FROM categories ORDER BY name;");
             const queryRes = result.rows;
             return res.status(200).send(queryRes)
-        }
-
+        //}
     } catch (error) {
         return res.status(500).send('ERROR 500');
     }
@@ -28,23 +22,17 @@ exports.getCategories = async (req, res, next) => {
 
 exports.getPaymentModes = async (req, res, next) => {
     try {
-        const token = req.headers.authorization
-        const vToken = verifyJWT(token)
-
-        if (vToken.status === 401) {
-
-            return res.status(401).send(vToken.message)
-
-        } else if (vToken.status === 500) {
-
-            return res.status(500).send(vToken.message)
-
-        } else if (vToken.status === 200) {
+        // const token = req.headers.authorization
+        // const vToken = verifyJWT(token)
+        // if (vToken.status === 401) {
+        //     return res.status(401).send(vToken.message)
+        // } else if (vToken.status === 500) {
+        //     return res.status(500).send(vToken.message)
+        // } else if (vToken.status === 200) {
             const result = await db.query("SELECT id, name AS desc FROM paymentsmodes ORDER BY id;");
             const queryRes = result.rows;
             return res.status(200).send(queryRes)
-        }
-
+        // }
     } catch (error) {
         return res.status(500).send('ERROR 500');
     }
