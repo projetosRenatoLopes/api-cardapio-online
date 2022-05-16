@@ -29,6 +29,7 @@ exports.insertProduct = async (req, res, next) => {
             if (user.rowCount === 0) {
                 return res.status(401).send({ "status": 401, "message": "Usuário inválido." });
             } else {
+                
                 const result = await db.query("INSERT INTO products (nomeprod, preco, img, ingr, categ, tagcompany) VALUES ('" + [req.body.nameprod] + "','" + [req.body.priceprod] + "','" + [req.body.imgprod] + "','" + [req.body.descprod] + "','" + [req.body.categprod] + "','" + [req.body.tagprod] + "');");
                 return res.status(200).send({ "status": 200, "message": "Produto inserido com sucesso" });
 
