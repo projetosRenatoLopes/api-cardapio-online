@@ -40,9 +40,26 @@ CREATE TABLE IF NOT EXISTS categories(
     PRIMARY KEY (id)
 );
 
+CREATE TABLE IF NOT EXISTS paymentsmodes(
+    uuid uuid DEFAULT uuid_generate_v4(),
+    name VARCHAR NOT NULL UNIQUE,
+    id VARCHAR NOT NULL UNIQUE,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS users (
+    uuid uuid DEFAULT uuid_generate_v4(),
+    nickname VARCHAR NOT NULL UNIQUE,
+    name VARCHAR NOT NULL,
+    pass VARCHAR NOT NULL,
+    tagpage VARCHAR NOT NULL,
+    PRIMARY KEY (uuid)
+);
 
 
 ALTER TABLE company ALTER COLUMN tag VARCHAR NOT NULL UNIQUE;
+
+INSERT INTO users (nickname, name, pass, tagpage) VALUES ('renato.lanches', 'Renato Lopes', 'admin2910rl', 'renatolanches');
 
 INSERT INTO categories (name, id) VALUES ('Sanduíches', '1');
 INSERT INTO categories (name, id) VALUES ('Pizzas', '2');
@@ -60,7 +77,15 @@ INSERT INTO categories (name, id) VALUES ('HotDog', '13');
 INSERT INTO categories (name, id) VALUES ('Esfirras', '14');
 INSERT INTO categories (name, id) VALUES ('Sobremesas', '15');
 
-
+INSERT INTO paymentsmodes (name, id) VALUES ('Pix', '1');
+INSERT INTO paymentsmodes (name, id) VALUES ('Dinheiro', '2');
+INSERT INTO paymentsmodes (name, id) VALUES ('Cartão de Crédito/Débito', '3');
+INSERT INTO paymentsmodes (name, id) VALUES ('Voucher', '4');
+INSERT INTO paymentsmodes (name, id) VALUES ('Vale Refeição', '5');
+INSERT INTO paymentsmodes (name, id) VALUES ('Vale Alimentação', '6');
+INSERT INTO paymentsmodes (name, id) VALUES ('Boleto', '7');
+INSERT INTO paymentsmodes (name, id) VALUES ('Cheque', '8');
+INSERT INTO paymentsmodes (name, id) VALUES ('TED/DOC', '9');
 
 INSERT INTO company (name, tag, funcDOM, funcSEG, funcTER, funcQUA, funcQUI, funcSEX, funcSAB, adrRUA, adrNUM, adrCOM, adrBAI, adrCID, adrEST, txENTREGA) VALUES ('Renato Lanches', 'renato-lanches', 'Fechado', 'Fechado', '18:00-23:00', '18:00-23:00', '18:00-23:00', '18:00-23:00', '18:00-23:00', 'Rua dos Pessegueiros', '196', 'Casa 2', 'Serra Negra', 'São Gotardo', 'MG', '7.0');
 

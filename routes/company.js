@@ -8,6 +8,9 @@ router.get('/:company', CompanyRepository.findCompanyByTag);
 // reposta para lista de empresasa cadastradas
 router.get('/', CompanyRepository.findAllCompany);
 
+//
+router.put('/:company', CompanyRepository.updateCompany)
+
 
 
 module.exports = router;
