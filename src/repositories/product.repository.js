@@ -28,12 +28,13 @@ exports.insertProduct = async (req, res, next) => {
             const user = await db.query("SELECT tagpage, name from users WHERE uuid = '" + vToken.id + "';")
             if (user.rowCount === 0) {
                 return res.status(401).send({ "status": 401, "message": "Usuário inválido." });
-            } else {
-                
-                const result = await db.query("INSERT INTO products (nomeprod, preco, img, ingr, categ, tagcompany) VALUES ('" + [req.body.nameprod] + "','" + [req.body.priceprod] + "','" + [req.body.imgprod] + "','" + [req.body.descprod] + "','" + [req.body.categprod] + "','" + [req.body.tagprod] + "');");
+            } else if (user.rows[0].tagpage === req.body[0].tagprod)  {            
+                const result = await db.query("INSERT INTO products (nomeprod, preco, img, ingr, categ, tagcompany) VALUES ('" + [req.body[0].nameprod] + "','" + [req.body[0].priceprod] + "','" + [req.body[0].imgprod] + "','" + [req.body[0].descprod] + "','" + [req.body[0].categprod] + "','" + [req.body[0].tagprod] + "');");
                 return res.status(200).send({ "status": 200, "message": "Produto inserido com sucesso" });
 
-            } 
+            } else {
+                return res.status(401).send({ "status": 401, "message": "Usuário sem permissão" });
+            }
         }
 
     } catch (error) {

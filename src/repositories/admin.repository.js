@@ -5,6 +5,7 @@ exports.getSession = async (req, res, next) => {
     try {
         const user = req.body.user
         const pass = req.body.password
+        
 
         const result = await db.query("SELECT name, uuid FROM login WHERE nickname = '" + user + "' AND pass = '" + pass + "';");
         const queryRes = result.rows;
@@ -16,7 +17,7 @@ exports.getSession = async (req, res, next) => {
             const secret = process.env.SECRET_KEY
 
             var token = jwt.sign({ id }, secret, {
-                expiresIn: 10800 // 5min 
+                expiresIn: 10800 
             });
 
             const dataUser = {
@@ -26,7 +27,6 @@ exports.getSession = async (req, res, next) => {
             }
             return res.status(200).send(dataUser);
         }
-
     } catch (error) {
         return res.status(500).send('ERROR 500');
     }
