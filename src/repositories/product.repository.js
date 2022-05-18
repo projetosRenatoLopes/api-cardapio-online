@@ -52,8 +52,9 @@ exports.updateProduct = async (req, res, next) => {
             const user = await db.query("SELECT tagpage, name from users WHERE uuid = '" + vToken.id + "';")
             if (user.rowCount === 0) {
                 return res.status(401).send({ "status": 401, "message": "Usuário inválido." });
-            } else if (user.rows[0].tagpage === req.body[0].tagprod)  {            
-                const result = await db.query("UPDATE products SET nomeprod = '" + [req.body[0].nameprod] + "', preco = '" + [req.body[0].priceprod] + "', img = '" + [req.body[0].imgprod] + "', ingr = '" + [req.body[0].descprod] + "', categ = '" + [req.body[0].categprod] + "', status = '" + [req.body[0].status] + "' WHERE uuid = '" + [req.body[0].id] + "';");
+            } else if (user.rows[0].tagpage === req.body[0].tagprod)  {  
+                console.log(req.body[0])          
+                const result = await db.query("UPDATE products SET nomeprod = '" + [req.body[0].nameprod] + "', preco = '" + [req.body[0].priceprod] + "', img = '" + [req.body[0].imgprod] + "', ingr = '" + [req.body[0].descprod] + "', categ = '" + [req.body[0].categprod] + "', status = '" + [req.body[0].sit] + "' WHERE uuid = '" + [req.body[0].id] + "';");
                 return res.status(200).send({ "status": 200, "message": "Produto alterado com sucesso" });
 
             } else {
