@@ -1,5 +1,6 @@
 const { db } = require('../db')
 var jwt = require('jsonwebtoken');
+const { verifyJWT } = require('../utils/checkToken');
 
 exports.getSession = async (req, res, next) => {
     try {
@@ -11,7 +12,7 @@ exports.getSession = async (req, res, next) => {
         const queryRes = result.rows;
         if (queryRes.length === 0) {
             return res.status(204).send();
-        } else if(queryRes[0].tagpage === tag) {            
+        } else if (queryRes[0].tagpage === tag) {
             const name = queryRes[0].name;
             const id = queryRes[0].uuid;
             const secret = process.env.SECRET_KEY
@@ -27,11 +28,36 @@ exports.getSession = async (req, res, next) => {
             }
             return res.status(200).send(dataUser);
         } else {
-            return res.status(401).send({"name":queryRes[0].name, "message":'Acesso negado'});
+            return res.status(401).send({ "status": 400, "message": "Acesso negado", "name": queryRes[0].name });
         }
 
 
     } catch (error) {
-        return res.status(500).send('ERROR 500');
+        return res.status(500).send({ "status": 500, 'message': error.message });
+    }
+}
+
+exports.validToken = async (req, res, next) => {
+    try {
+        const vToken = verifyJWT(req.headers.authorization)
+        if (vToken.status === 401) { return res.status(401).send({ "status": 401, "message": vToken.message }) }
+        else if (vToken.status === 500) { return res.status(500).send({ "status": 500, "message": vToken.message }) }
+        else if (vToken.status === 200) {
+            const user = await db.query("SELECT tagpage, name from users WHERE uuid = '" + vToken.id + "';")
+            console.log(req)
+            if (user.rowCount === 0) {
+                return res.status(401).send({ "status": 401, "message": "Usuário inválido." });
+            } else if (user.rows[0].tagpage === req.body.tagprod)  {            
+                
+                // return res.status(200).send({ "status": 200, "user": "Produto inserido com sucesso" });
+                return res.status(200).send({"status": 200, "user": user.rows[0].name});
+
+            } else {
+                return res.status(401).send({ "status": 401, "message": "Usuário sem permissão" });
+            }
+        }
+
+    } catch (error) {
+        return res.status(error.code).send({ "status": error.code, 'message': error.message });
     }
 }

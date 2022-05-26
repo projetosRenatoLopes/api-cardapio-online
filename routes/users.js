@@ -8,6 +8,8 @@ router.post('/login', userRepository.getSession);
 
 router.post('/', adminRepository.getSession);
 
+router.post('/validtoken', userRepository.validToken)
+
 
 
 module.exports = router;
