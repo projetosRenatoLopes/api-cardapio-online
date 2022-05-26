@@ -18,7 +18,7 @@ exports.getSession = async (req, res, next) => {
             const secret = process.env.SECRET_KEY
 
             var token = jwt.sign({ id }, secret, {
-                expiresIn: 10800 // 5min 
+                expiresIn: 604800 // 7 dias
             });
 
             const dataUser = {
