@@ -10,6 +10,8 @@ router.post('/', adminRepository.getSession);
 
 router.post('/validtoken', userRepository.validToken)
 
+router.put('/update',  userRepository.updateUser)
+
 
 
 module.exports = router;
