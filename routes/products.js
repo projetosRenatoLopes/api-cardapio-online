@@ -7,5 +7,7 @@ router.get('/:company', ProductRepository.findAllProducts);
 
 router.put('/alterar', ProductRepository.updateProduct);
 
+router.delete('/excluir', ProductRepository.deleteProduct);
+
 
 module.exports = router;

@@ -44,7 +44,6 @@ exports.validToken = async (req, res, next) => {
         else if (vToken.status === 500) { return res.status(500).send({ "status": 500, "message": vToken.message }) }
         else if (vToken.status === 200) {
             const user = await db.query("SELECT tagpage, name from users WHERE uuid = '" + vToken.id + "';")
-            console.log(req)
             if (user.rowCount === 0) {
                 return res.status(401).send({ "status": 401, "message": "Usuário inválido." });
             } else if (user.rows[0].tagpage === req.body.tagprod)  {            
