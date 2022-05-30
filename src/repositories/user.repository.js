@@ -49,7 +49,7 @@ exports.validToken = async (req, res, next) => {
             } else if (user.rows[0].tagpage === req.body.tagprod) {
 
                 // return res.status(200).send({ "status": 200, "user": "Produto inserido com sucesso" });
-                return res.status(200).send({ "status": 200, "user": user.rows[0].name });
+                return res.status(200).send({ "status": 200, "id": user.rows[0].uuid, "user": user.rows[0].name,  });
 
             } else {
                 return res.status(401).send({ "status": 401, "message": "Usuário sem permissão" });
