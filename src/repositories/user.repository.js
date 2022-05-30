@@ -43,13 +43,13 @@ exports.validToken = async (req, res, next) => {
         if (vToken.status === 401) { return res.status(401).send({ "status": 401, "message": vToken.message }) }
         else if (vToken.status === 500) { return res.status(500).send({ "status": 500, "message": vToken.message }) }
         else if (vToken.status === 200) {
-            const user = await db.query("SELECT tagpage, name from users WHERE uuid = '" + vToken.id + "';")
+            const user = await db.query("SELECT tagpage, name, uuid from users WHERE uuid = '" + vToken.id + "';")
             if (user.rowCount === 0) {
                 return res.status(401).send({ "status": 401, "message": "Usuário inválido." });
             } else if (user.rows[0].tagpage === req.body.tagprod) {
-
+                console.log(user.rows[0])
                 // return res.status(200).send({ "status": 200, "user": "Produto inserido com sucesso" });
-                return res.status(200).send({ "status": 200, "id": user.rows[0].uuid, "user": user.rows[0].name,  });
+                return res.status(200).send({ "status": 200, "id": user.rows[0].uuid, "user": user.rows[0].name, });
 
             } else {
                 return res.status(401).send({ "status": 401, "message": "Usuário sem permissão" });
