@@ -8,13 +8,14 @@ exports.getSession = async (req, res, next) => {
         const pass = req.body.password
         const tag = req.body.page
 
-        const result = await db.query("SELECT name, uuid, tagpage FROM users WHERE nickname = '" + user + "' AND pass = '" + pass + "';");
+        const result = await db.query("SELECT name, id, tagpage FROM users WHERE nickname = '" + user + "' AND pass = '" + pass + "';");
+        
         const queryRes = result.rows;
         if (queryRes.length === 0) {
             return res.status(204).send();
         } else if (queryRes[0].tagpage === tag) {
             const name = queryRes[0].name;
-            const id = queryRes[0].uuid;
+            const id = queryRes[0].id;
             const secret = process.env.SECRET_KEY
 
             var token = jwt.sign({ id }, secret, {

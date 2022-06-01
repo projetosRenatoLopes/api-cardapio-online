@@ -41,12 +41,14 @@ const rotaCompany = require('./routes/company');
 const rotaProducts = require('./routes/products');
 const rotaInserts = require('./routes/inserts');
 const rotaUsers = require('./routes/users');
+const rotaRadio = require('./routes/radio');
 const rotaOpcoes = require('./routes/opcoes');
 app.use('/empresa', rotaCompany);
 app.use('/produtos', rotaProducts);
 app.use('/cadastro', rotaInserts);
 app.use('/admin', rotaUsers);
 app.use('/opcoes', rotaOpcoes);
+app.use('/user', rotaRadio)
 
 
 app.use('/api', (req, res, next) => {
