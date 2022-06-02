@@ -5,8 +5,8 @@ const { verifyJWT } = require('../utils/checkToken');
 exports.getSession = async (req, res, next) => {
     try {
         const user = req.body.user
-        const pass = req.body.password        
-        const result = await dbradio.query("SELECT name, id FROM users WHERE nickname = '" + user + "' AND pass = '" + pass + "';");        
+        const pass = req.body.password
+        const result = await dbradio.query("SELECT name, id FROM users WHERE nickname = '" + user + "' AND pass = '" + pass + "';");
         const queryRes = result.rows;
         if (queryRes.length === 0) {
             return res.status(204).send();
@@ -115,9 +115,54 @@ exports.like = async (req, res, next) => {
             if (user.rowCount === 0) {
                 return res.status(401).send({ "status": 401, "message": "Usuário inválido." });
             } else {
+                const likesPost = await dbradio.query("SELECT likes FROM posts WHERE uuid = '" + [req.body.id] + "';");
+                if (likesPost.rowCount === 0) {
+                    return res.status(404).send({ "status": 404, "message": "Post não encontrado." });
+                } else {
+                    const likes = likesPost.rows[0].likes;
+                    var postLikes = likes.split(','), newLikes = [], liked = false, userId = vToken.id;
+                    if (likes !== null && likes !== "" && likes !== undefined) {
+                        newLikes = postLikes
+                        postLikes.forEach(element => {
+                            if (element === userId) {
+                                liked = true;
+                            }
+                        });
+                    }
+                    console.log('liked: ' + liked)
+                    if (req.body.action === 'like') {
+                        console.log('action: like')
+                        if (liked === false) {
+                            newLikes.push(userId)
+                        }
+                    } else {
+                        console.log('action: unlike')
+                        if (liked !== false) {
+                            if (postLikes.length === 1) {
+                                if (postLikes[0] === userId) {
+                                    newLikes = [];
+                                }
+                            } else {
+                                console.log("Antes: " + newLikes)
+                                var removedLike = [];
+                                postLikes.forEach(element => {
+                                    if (element !== userId) {
+                                        removedLike.push(element);
+                                    }
+                                });
+                                newLikes = removedLike;
+                                console.log("Depois: " + newLikes)
+                            }
+                        }
+                    }
 
-                await dbradio.query("UPDATE posts SET likes = '" + [req.body.likes] + "' WHERE uuid = '" + [req.body.id] + "';");
-                return res.status(200).send({ "status": 200, "message": "you like post", "userId": [req.body.id] });
+                    newLikes = newLikes.join(',')
+                    console.log(newLikes)
+
+                    await dbradio.query("UPDATE posts SET likes = '" + newLikes + "' WHERE uuid = '" + [req.body.id] + "';");
+                    return res.status(200).send({ "status": 200, "message": "you " + req.body.action + " post", "userId": [req.body.id] });
+                }
+
 
             }
         }
@@ -150,3 +195,4 @@ exports.sendPost = async (req, res, next) => {
     }
 
 }
+
