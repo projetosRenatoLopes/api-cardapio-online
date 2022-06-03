@@ -7,7 +7,7 @@ exports.getSession = async (req, res, next) => {
     try {
         const user = req.body.user
         const pass = req.body.password
-        const result = await dbradio.query("SELECT name, id FROM users WHERE nickname = '" + user + "' AND pass = '" + pass + "';");
+        const result = await dbradio.query("SELECT name, id, avatar FROM users WHERE nickname = '" + user + "' AND pass = '" + pass + "';");
         const queryRes = result.rows;
         if (queryRes.length === 0) {
             return res.status(204).send();
@@ -24,7 +24,8 @@ exports.getSession = async (req, res, next) => {
                 "name": name,
                 "id": id,
                 "token": token,
-                "nickname": req.body.user
+                "nickname": req.body.user,
+                "avatar":  result.rows[0].avatar
             }
             return res.status(200).send(dataUser);
         }
@@ -79,6 +80,32 @@ exports.updateUser = async (req, res, next) => {
 
 }
 
+exports.updateImgUser = async (req, res, next) => {
+    try {
+        const vToken = verifyJWT(req.headers.authorization)
+        if (vToken.status === 401) { return res.status(401).send({ "error": 401, "message": vToken.message }) }
+        else if (vToken.status === 500) { return res.status(500).send({ "error": 500, "message": vToken.message }) }
+        else if (vToken.status === 200) {
+            const user = await dbradio.query("SELECT name from users WHERE id = '" + vToken.id + "';")
+            if (user.rowCount === 0) {
+                return res.status(401).send({ "status": 401, "message": "Usuário inválido." });
+            } else {
+                const result = await dbradio.query("SELECT * from users WHERE id = '" + vToken.id + "';");
+                if (result.rowCount === 0) {
+                    return res.status(401).send({ "status": 401, "message": "Usuário não encontrado." });
+                } else {
+                    await dbradio.query("UPDATE users SET avatar = '" + [req.body[0].avatar] + "' WHERE id = '" + vToken.id + "';");
+                    return res.status(200).send({ "status": 200, "message": "Imagem do usuário alterada com sucesso", "idUser": vToken.id });
+                }
+            }
+        }
+
+    } catch (error) {
+        return res.status(500).send({ 'Error': error.code, 'message': error.error });
+    }
+
+}
+
 exports.getPosts = async (req, res, next) => {
     try {
         const vToken = verifyJWT(req.headers.authorization)
@@ -90,7 +117,7 @@ exports.getPosts = async (req, res, next) => {
                 return res.status(401).send({ "status": 401, "message": "Usuário inválido." });
             } else {
                 const result = await dbradio.query("SELECT P.uuid, P.post, P.likes, P.date, U.nickname, U.name FROM posts P INNER JOIN users U ON P.iduser = U.id;");
-                const users = await dbradio.query("SELECT id, name, nickname FROM users;");
+                const users = await dbradio.query("SELECT id, name, nickname, avatar FROM users;");
 
                 if (result.rowCount === 0) {
                     return res.status(204).send({ "status": 204, "message": "Nenhum post." });

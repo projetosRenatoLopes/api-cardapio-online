@@ -9,6 +9,8 @@ router.post('/validtoken', radioRepository.validToken)
 
 router.put('/update',  radioRepository.updateUser)
 
+router.put('/updateimg',  radioRepository.updateImgUser)
+
 router.post('/like',  radioRepository.like)
 
 router.post('/post', radioRepository.sendPost)

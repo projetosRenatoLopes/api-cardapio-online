@@ -62,6 +62,7 @@ DEFAULT ('Ativo')
 
 
 ALTER TABLE company ALTER COLUMN tag VARCHAR NOT NULL UNIQUE;
+ALTER TABLE users ALTER COLUMN avatar VARCHAR NULL;
 
 INSERT INTO users (nickname, name, pass, tagpage) VALUES ('renato.lanches', 'Renato Lopes', 'admin2910rl', 'renatolanches');
 
