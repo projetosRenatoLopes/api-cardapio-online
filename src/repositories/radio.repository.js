@@ -83,7 +83,7 @@ exports.getPosts = async (req, res, next) => {
     try {
         const vToken = verifyJWT(req.headers.authorization)
         if (vToken.status === 401) { return res.status(401).send({ "error": 401, "message": vToken.message }) }
-        else if (vToken.status === 500) { return res.status(500).send({ "error": 500, "message": vToken.message }) }
+        else if (vToken.status === 204) { return res.status(204).send({ "error": 204, "message": vToken.message }) }
         else if (vToken.status === 200) {
             const user = await dbradio.query("SELECT name from users WHERE id = '" + vToken.id + "';")
             if (user.rowCount === 0) {
@@ -108,7 +108,7 @@ exports.sendPost = async (req, res, next) => {
     try {
         const vToken = verifyJWT(req.headers.authorization)
         if (vToken.status === 401) { return res.status(401).send({ "error": 401, "message": vToken.message }) }
-        else if (vToken.status === 500) { return res.status(500).send({ "error": 500, "message": vToken.message }) }
+        else if (vToken.status === 204) { return res.status(204).send({ "error": 204, "message": vToken.message }) }
         else if (vToken.status === 200) {
             const user = await dbradio.query("SELECT name from users WHERE id = '" + vToken.id + "';")
             if (user.rowCount === 0) {
@@ -131,7 +131,7 @@ exports.like = async (req, res, next) => {
     try {
         const vToken = verifyJWT(req.headers.authorization)
         if (vToken.status === 401) { return res.status(401).send({ "error": 401, "message": vToken.message }) }
-        else if (vToken.status === 500) { return res.status(500).send({ "error": 500, "message": vToken.message }) }
+        else if (vToken.status === 204) { return res.status(204).send({ "error": 204, "message": vToken.message }) }
         else if (vToken.status === 200) {
             const user = await dbradio.query("SELECT name from users WHERE id = '" + vToken.id + "';")
             if (user.rowCount === 0) {
