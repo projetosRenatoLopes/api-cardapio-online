@@ -115,7 +115,7 @@ exports.sendPost = async (req, res, next) => {
                 return res.status(401).send({ "status": 401, "message": "Usuário inválido." });
             } else {
 
-                const post = await dbradio.query("INSERT INTO posts (iduser, post, date) VALUES ('" + [vToken.id] + "','" + [req.body.post] + "','" + Date.now() + "');");
+                const post = await dbradio.query("INSERT INTO posts (iduser, post, liks, date) VALUES ('" + [vToken.id] + "','" + [req.body.post] + "','','" + Date.now() + "');");
                 return res.status(200).send({ "status": 200, "message": "you send a post", "userId": [vToken.id] });
 
             }
