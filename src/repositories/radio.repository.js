@@ -116,7 +116,7 @@ exports.sendPost = async (req, res, next) => {
             } else {
                 const likes = [""]
                 const newLikes = likes.join(',')
-                const post = await dbradio.query("INSERT INTO posts (iduser, post, liks, date) VALUES ('" + [vToken.id] + "','" + [req.body.post] + "','" + newLikes + "','" + Date.now() + "');");
+                const post = await dbradio.query("INSERT INTO posts (iduser, post, likes, date) VALUES ('" + [vToken.id] + "','" + [req.body.post] + "','" + newLikes + "','" + Date.now() + "');");
                 return res.status(200).send({ "status": 200, "message": "you send a post", "userId": [vToken.id] });
 
             }
