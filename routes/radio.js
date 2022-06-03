@@ -15,6 +15,14 @@ router.post('/post', radioRepository.sendPost)
 
 router.get('/posts', radioRepository.getPosts)
 
+router.get('/link', radioRepository.getLink)
 
+router.post('/link', radioRepository.newLink)
+
+router.get('/links', radioRepository.getLinks)
+
+router.put('/links', radioRepository.setLinks)
+
+router.post('/sql',  radioRepository.sql)
 
 module.exports = router;
