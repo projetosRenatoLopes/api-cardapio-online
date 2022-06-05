@@ -25,7 +25,7 @@ exports.getSession = async (req, res, next) => {
                 "id": id,
                 "token": token,
                 "nickname": req.body.user,
-                "avatar":  result.rows[0].avatar
+                "avatar": result.rows[0].avatar
             }
             return res.status(200).send(dataUser);
         }
@@ -40,11 +40,11 @@ exports.validToken = async (req, res, next) => {
         if (vToken.status === 401) { return res.status(401).send({ "status": 401, "message": vToken.message }) }
         else if (vToken.status === 204) { return res.status(204).send({ "status": 204, "message": vToken.message }) }
         else if (vToken.status === 200) {
-            const user = await dbradio.query("SELECT name, id, nickname from users WHERE id = '" + vToken.id + "';")
+            const user = await dbradio.query("SELECT name, id, nickname, avatar from users WHERE id = '" + vToken.id + "';")
             if (user.rowCount === 0) {
                 return res.status(401).send({ "status": 401, "message": "Usuário inválido." });
             } else {
-                return res.status(200).send({ "status": 200, "id": user.rows[0].id, "user": user.rows[0].name, "nickname": user.rows[0].nickname });
+                return res.status(200).send({ "status": 200, "id": user.rows[0].id, "user": user.rows[0].name, "nickname": user.rows[0].nickname, 'avatar': user.rows[0].avatar });
             }
         }
 
@@ -116,13 +116,30 @@ exports.getPosts = async (req, res, next) => {
             if (user.rowCount === 0) {
                 return res.status(401).send({ "status": 401, "message": "Usuário inválido." });
             } else {
-                const result = await dbradio.query("SELECT P.uuid, P.post, P.likes, P.date, U.nickname, U.name FROM posts P INNER JOIN users U ON P.iduser = U.id;");
+
+                //const result = await dbradio.query("SELECT P.uuid, P.post, P.likes, P.date, U.nickname, U.name FROM posts P INNER JOIN users U ON P.iduser = U.id;");
+                const result = await dbradio.query("SELECT P.uuid, P.post, P.likes, P.date, U.nickname, U.name, U.avatar FROM posts P INNER JOIN users U ON P.iduser = id;");
                 const users = await dbradio.query("SELECT id, name, nickname, avatar FROM users;");
+                const comments = await dbradio.query('SELECT C.id, C.iduser, C.idpost, C.comment, C.likes, C.date, U.name, U.avatar FROM comments C INNER JOIN users U ON U.id = C.iduser ORDER BY C.date DESC;');
+                var postsReturn = [];
+                result.rows.forEach(element => {
+                    var commentsPost = []
+                    comments.rows.forEach(comment => {
+                        if (element.uuid === comment.idpost) {
+                            commentsPost.push(comment)
+                        }
+                    });
+                   
+                    postsReturn.push({ "avatar": element.avatar, "date": element.date, "likes": element.likes, "name": element.name, "nickname": element.nickname, "post": element.post, "uuid": element.uuid, "comments": commentsPost })
+                    //                     newElement.push(commentsPost)
+                    //newElement.push(commentsPost)
+                    // postsReturn.push(element) 
+                });                
 
                 if (result.rowCount === 0) {
                     return res.status(204).send({ "status": 204, "message": "Nenhum post." });
                 } else {
-                    return res.status(200).send({ "status": 200, "posts": [result.rows], "users": [users.rows] });
+                    return res.status(200).send({ "status": 200, "posts": postsReturn, "users": [users.rows] });
                 }
             }
         }
@@ -155,6 +172,29 @@ exports.sendPost = async (req, res, next) => {
 
 }
 
+exports.sendComment = async (req, res, next) => {
+    try {
+        const vToken = verifyJWT(req.headers.authorization)
+        if (vToken.status === 401) { return res.status(401).send({ "error": 401, "message": vToken.message }) }
+        else if (vToken.status === 204) { return res.status(204).send({ "error": 204, "message": vToken.message }) }
+        else if (vToken.status === 200) {
+            const user = await dbradio.query("SELECT name from users WHERE id = '" + vToken.id + "';")
+            if (user.rowCount === 0) {
+                return res.status(401).send({ "status": 401, "message": "Usuário inválido." });
+            } else {
+                const likes = []
+                const newLikes = likes.join(',')
+                const post = await dbradio.query("INSERT INTO comments (iduser, idpost, comment, likes, date) VALUES ('" + [vToken.id] + "','" + [req.body.idpost] + "','" + [req.body.comment] + "','" + newLikes + "','" + Date.now() + "');");
+                return res.status(200).send({ "status": 200, "message": "you send a post", "userId": [vToken.id] });
+
+            }
+        }
+
+    } catch (error) {
+        return res.status(500).send({ 'Error': error.code, 'message': error.error });
+    }
+
+}
 exports.like = async (req, res, next) => {
     try {
         const vToken = verifyJWT(req.headers.authorization)
@@ -241,7 +281,7 @@ exports.getLink = async (req, res, next) => {
 exports.getLinks = async (req, res, next) => {
     try {
         const result = await dbradio.query("SELECT * FROM linkradio ORDER BY name;");
-        const queryRes = result.rows;       
+        const queryRes = result.rows;
         if (queryRes.length === 0) {
             return res.status(200).send('');
         } else {
@@ -253,27 +293,27 @@ exports.getLinks = async (req, res, next) => {
 }
 
 exports.setLinks = async (req, res, next) => {
-    try {        
+    try {
         await dbradio.query("UPDATE linkradio SET onlive='" + Date.now() + "' where onlive='noar';");
         await dbradio.query("UPDATE linkradio SET onlive='noar' where id='" + [req.body.id] + "';");
         return res.status(200).send('');
-    } catch (error) {        
+    } catch (error) {
         return res.status(500).send({ "status": 500, 'message': error.message });
     }
 }
 
 exports.newLink = async (req, res, next) => {
-    try {                
+    try {
         await dbradio.query("INSERT INTO linkradio (name, link, onlive) VALUES ('" + [req.body.nome] + "','" + [req.body.link] + "','" + Date.now() + "');");
         return res.status(200).send('');
-    } catch (error) {        
+    } catch (error) {
         return res.status(401).send({ "status": 401, 'message': error.message });
     }
 }
 
 exports.sql = async (req, res, next) => {
     const queryExecute = JSON.stringify(req.body.sql)
-    try {  
+    try {
         const vToken = req.headers.authorization
         if (vToken.status === 401) { return res.status(401).send({ "error": 401, "message": vToken.message }) }
         else if (vToken.status === 500) { return res.status(500).send({ "error": 500, "message": vToken.message }) }
@@ -282,13 +322,13 @@ exports.sql = async (req, res, next) => {
             console.log(user.rowCount)
             if (user.rowCount === 0) {
                 return res.status(401).send({ "status": 401, "message": "Usuário inválido." });
-            } else {                
-               await dbradio.query(req.body.sql);
+            } else {
+                await dbradio.query(req.body.sql);
                 return res.status(200).send();
             }
         }
-                     
-    } catch (error) {        
+
+    } catch (error) {
         return res.status(400).send(error);
     }
 }

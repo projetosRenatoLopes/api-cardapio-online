@@ -15,6 +15,8 @@ router.post('/like',  radioRepository.like)
 
 router.post('/post', radioRepository.sendPost)
 
+router.post('/comment', radioRepository.sendComment)
+
 router.get('/posts', radioRepository.getPosts)
 
 router.get('/link', radioRepository.getLink)
