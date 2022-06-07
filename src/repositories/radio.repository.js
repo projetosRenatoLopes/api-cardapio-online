@@ -118,7 +118,7 @@ exports.getPosts = async (req, res, next) => {
             } else {
 
                 //const result = await dbradio.query("SELECT P.uuid, P.post, P.likes, P.date, U.nickname, U.name FROM posts P INNER JOIN users U ON P.iduser = U.id;");
-                const result = await dbradio.query("SELECT P.uuid, P.post, P.likes, P.date, U.nickname, U.name, U.avatar FROM posts P INNER JOIN users U ON P.iduser = id;");
+                const result = await dbradio.query("SELECT P.uuid, P.post, P.likes, P.date, P.havemedia, U.nickname, U.name, U.avatar, M.media, M.type FROM posts P INNER JOIN users U ON P.iduser = id  LEFT JOIN media M ON M.id = P.media;");
                 const users = await dbradio.query("SELECT id, name, nickname, avatar FROM users;");
                 const comments = await dbradio.query('SELECT C.id, C.iduser, C.idpost, C.comment, C.likes, C.date, U.name, U.avatar FROM comments C INNER JOIN users U ON U.id = C.iduser ORDER BY C.date DESC;');
                 var postsReturn = [];
@@ -129,12 +129,11 @@ exports.getPosts = async (req, res, next) => {
                             commentsPost.push(comment)
                         }
                     });
-                   
-                    postsReturn.push({ "avatar": element.avatar, "date": element.date, "likes": element.likes, "name": element.name, "nickname": element.nickname, "post": element.post, "uuid": element.uuid, "comments": commentsPost })
+                    postsReturn.push({ "avatar": element.avatar, "date": element.date, "likes": element.likes, "name": element.name, "nickname": element.nickname, "post": element.post, "uuid": element.uuid, "comments": commentsPost, "havemedia": element.havemedia, "media": element.media, "typemedia": element.type })
                     //                     newElement.push(commentsPost)
                     //newElement.push(commentsPost)
                     // postsReturn.push(element) 
-                });                
+                });
 
                 if (result.rowCount === 0) {
                     return res.status(204).send({ "status": 204, "message": "Nenhum post." });
@@ -160,8 +159,17 @@ exports.sendPost = async (req, res, next) => {
             } else {
                 const likes = []
                 const newLikes = likes.join(',')
-                const post = await dbradio.query("INSERT INTO posts (iduser, post, likes, date) VALUES ('" + [vToken.id] + "','" + [req.body.post] + "','" + newLikes + "','" + Date.now() + "');");
-                return res.status(200).send({ "status": 200, "message": "you send a post", "userId": [vToken.id] });
+                if (req.body.havemedia === true) {                    
+                    const dateNow = Date.now();
+                    await dbradio.query("INSERT INTO media (iduser, media, type, date) VALUES ('" + [vToken.id] + "','" + [req.body.media] + "','" + [req.body.typemedia] + "','" + dateNow + "');");
+                    const mediaId = await dbradio.query("SELECT id FROM media WHERE date='" + dateNow + "' AND iduser='" + [vToken.id] + "';");
+                    const post = await dbradio.query("INSERT INTO posts (iduser, post, likes, date, havemedia, media) VALUES ('" + [vToken.id] + "','" + [req.body.post] + "','" + newLikes + "','" + dateNow + "','" + true + "','" + mediaId.rows[0].id + "');");
+                    return res.status(200).send({ "status": 200, "message": "you send a post with media ", "userId": [vToken.id] });
+                } else {
+                    const post = await dbradio.query("INSERT INTO posts (iduser, post, likes, date, havemedia, media) VALUES ('" + [vToken.id] + "','" + [req.body.post] + "','" + newLikes + "','" + Date.now() + "','" + false + "','" + null + "');");
+                    return res.status(200).send({ "status": 200, "message": "you send a post with media ", "userId": [vToken.id] });
+                }
+                //const post = await dbradio.query("INSERT INTO posts (iduser, post, likes, date) VALUES ('" + [vToken.id] + "','" + [req.body.post] + "','" + newLikes + "','" + Date.now() + "');");
 
             }
         }
@@ -219,21 +227,17 @@ exports.like = async (req, res, next) => {
                             }
                         });
                     }
-                    console.log('liked: ' + liked)
-                    if (req.body.action === 'like') {
-                        console.log('action: like')
+                    if (req.body.action === 'like') {                        
                         if (liked === false) {
                             newLikes.push(userId)
                         }
                     } else {
-                        console.log('action: unlike')
                         if (liked !== false) {
                             if (postLikes.length === 1) {
                                 if (postLikes[0] === userId) {
                                     newLikes = [];
                                 }
                             } else {
-                                console.log("Antes: " + newLikes)
                                 var removedLike = [];
                                 postLikes.forEach(element => {
                                     if (element !== userId) {
@@ -241,14 +245,11 @@ exports.like = async (req, res, next) => {
                                     }
                                 });
                                 newLikes = removedLike;
-                                console.log("Depois: " + newLikes)
                             }
                         }
                     }
 
                     newLikes = newLikes.join(',')
-                    console.log(newLikes)
-
                     await dbradio.query("UPDATE posts SET likes = '" + newLikes + "' WHERE uuid = '" + [req.body.id] + "';");
                     return res.status(200).send({ "status": 200, "message": "you " + req.body.action + " post", "userId": [req.body.id] });
                 }
@@ -267,7 +268,6 @@ exports.getLink = async (req, res, next) => {
     try {
         const result = await dbradio.query("SELECT link FROM linkradio WHERE onlive = 'noar';");
         const queryRes = result.rows;
-        console.log(queryRes)
         if (queryRes.length === 0) {
             return res.status(200).send('');
         } else {
@@ -319,7 +319,6 @@ exports.sql = async (req, res, next) => {
         else if (vToken.status === 500) { return res.status(500).send({ "error": 500, "message": vToken.message }) }
         else if (vToken.status === 200) {
             const user = await db.query("SELECT name from login WHERE uuid = '" + vToken.id + "';")
-            console.log(user.rowCount)
             if (user.rowCount === 0) {
                 return res.status(401).send({ "status": 401, "message": "Usuário inválido." });
             } else {
